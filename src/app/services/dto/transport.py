@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import date
 
+from db.entities import TransportType
+
 
 @dataclass
 class Transport:
@@ -11,4 +13,4 @@ class Transport:
     manufacturing_date: date
     capacity: int
     is_repaired: bool
-    type_id: int
+    transport_type: TransportType
