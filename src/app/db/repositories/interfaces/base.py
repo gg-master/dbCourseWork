@@ -12,9 +12,13 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def add(self, item: Any) -> None:
+    def add(self, item: Any) -> int:
         ...
 
     @abstractmethod
     def update(self, item: Any) -> None:
+        ...
+
+    @abstractmethod
+    def delete(self, item_id: int) -> None:
         ...

@@ -4,7 +4,7 @@ from services.dto.route_schedule import RouteSchedule, TransportationStop
 
 
 @dataclass
-class TransportStopSchedule:
+class TransportatStopSchedule:
     id: int
     route_schedule: RouteSchedule
     stop: TransportationStop

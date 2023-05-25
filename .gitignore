@@ -2,3 +2,4 @@
 .vscode
 erd
 __pycache__
+*.env

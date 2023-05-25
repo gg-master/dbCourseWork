@@ -8,5 +8,5 @@ class User:
     full_name: str
     email: str
     phone: str
-    birth_data: str
+    birth_date: date
     registration_date: date
