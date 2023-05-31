@@ -25,7 +25,7 @@ class TransportationStopRepository(Repository, ITransportationStopRepository):
             map(lambda x: TransportationStop(*x), self._cursor.fetchall())
         )
 
-    def add(self, item: TransportationStop) -> int:
+    def create(self, item: TransportationStop) -> int:
         self._cursor.execute(
             """
             INSERT INTO public.transportation_stop(name, latitude, longitude)
@@ -64,7 +64,7 @@ class TransportationStopRepository(Repository, ITransportationStopRepository):
             {"item_id": item_id},
         )
 
-    def add_connection_transportation_stop_transport_type(
+    def create_conn_transportation_stop_transport_type(
         self, item_id: int, tr_types: List[TransportType]
     ):
         query = """
@@ -74,10 +74,31 @@ class TransportationStopRepository(Repository, ITransportationStopRepository):
         """
         arr = [f'(%(stop_id)s, %(tt{i})' for i in range(len(tr_types))]
         query += ',\n'.join(arr) + ';'
-        
+
         args = {"stop_id": item_id}
         i: TransportType
         for num, i in enumerate(tr_types):
             args[f'tt{num}'] = i.id
 
         self._cursor.execute(query, args)
+
+    def delete_conn_transportation_stop_transport_type(self, item_id: int):
+        self._cursor.execute(
+            """
+            DELETE FROM public.transportation_stop_transport_type
+	            WHERE transportation_stop_id = %(item_id)s;
+        """,
+            {"item_id": item_id},
+        )
+        
+    def get_supported_transport_type(self, item_id) -> List[TransportType]:
+        self._cursor.execute(
+            """
+            SELECT * FROM public.transport_type tt
+            JOIN transportation_stop_transport_type tstt 
+            ON tt.id = tstt.transport_type_id
+            WHERE tstt.transportation_stop_id = %(item_id)s;
+        """,
+            {"item_id": item_id},
+        )
+        return list(map(lambda x: TransportType(*x), self._cursor.fetchall()))

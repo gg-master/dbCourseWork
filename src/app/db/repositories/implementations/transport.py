@@ -23,7 +23,7 @@ class TransportRepository(Repository, ITransportRepository):
         )
         return list(map(lambda x: Transport(*x), self._cursor.fetchall()))
 
-    def add(self, item: Transport) -> int:
+    def create(self, item: Transport) -> int:
         self._cursor.execute(
             """
             INSERT INTO public.transport(brand, registration_number, 

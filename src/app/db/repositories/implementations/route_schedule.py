@@ -23,7 +23,7 @@ class RouteScheduleRepository(Repository, IRouteScheduleRepository):
         )
         return list(map(lambda x: RouteSchedule(*x), self._cursor.fetchall()))
 
-    def add(self, item: RouteSchedule) -> int:
+    def create(self, item: RouteSchedule) -> int:
         self._cursor.execute(
             """
             INSERT INTO public.route_schedule(transport_id, route_id)
@@ -60,7 +60,7 @@ class RouteScheduleRepository(Repository, IRouteScheduleRepository):
             {"item_id": item_id},
         )
 
-    def add_connection_transport_workers_route_schedule(
+    def create_connection_transport_workers_route_schedule(
         self, item_id: int, tr_workers: List[TransportWorker]
     ) -> None:
         query = """

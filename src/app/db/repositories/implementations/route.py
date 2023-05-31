@@ -23,7 +23,7 @@ class RouteRepository(Repository, IRouteRepository):
         )
         return list(map(lambda x: Route(*x), self._cursor.fetchall()))
 
-    def add(self, item: Route) -> int:
+    def create(self, item: Route) -> int:
         self._cursor.execute(
             """
             INSERT INTO public.routes(name, price, rating)

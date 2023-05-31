@@ -12,7 +12,7 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def add(self, item: Any) -> int:
+    def create(self, item: Any) -> int:
         ...
 
     @abstractmethod

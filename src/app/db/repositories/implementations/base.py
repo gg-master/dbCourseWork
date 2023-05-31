@@ -1,4 +1,4 @@
-from app.db.implementations.database import Database
+from app.db.implementations import Database
 from app.db.repositories.interfaces.base import IRepository
 
 

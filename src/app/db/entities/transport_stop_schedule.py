@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 @dataclass
-class TransportStopSchedule:
+class TransportationStopSchedule:
     id: int
     route_schedule_id: id
     stop_id: int

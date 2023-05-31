@@ -14,7 +14,7 @@ class ITransportationStopRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add(self, item: TransportationStop) -> int:
+    def create(self, item: TransportationStop) -> int:
         ...
 
     @abstractmethod
@@ -22,7 +22,15 @@ class ITransportationStopRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add_connection_transportation_stop_transport_type(
+    def create_conn_transportation_stop_transport_type(
         self, item_id: int, tr_types: List[TransportType]
     ):
+        ...
+    
+    @abstractmethod
+    def delete_conn_transportation_stop_transport_type(self, item_id: int):
+        ...
+
+    @abstractmethod
+    def get_supported_transport_type(self, item_id: int) -> List[TransportType]:
         ...

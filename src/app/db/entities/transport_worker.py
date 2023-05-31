@@ -6,5 +6,5 @@ class TransportWorker:
     id: int
     full_name: str
     phone: str
-    birth_data: str
+    birth_date: str
  

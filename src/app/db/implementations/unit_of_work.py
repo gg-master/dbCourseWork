@@ -4,6 +4,7 @@ from app.db.implementations.database import Database
 from app.db.interfaces.unit_of_work import IUnitOfWork
 
 
+# TODO change this to an adequate implementation
 class UnitOfWork(IUnitOfWork):
     __logger = logging.getLogger(__name__)
 

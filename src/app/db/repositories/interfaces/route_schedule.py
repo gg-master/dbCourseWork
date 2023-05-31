@@ -14,7 +14,7 @@ class IRouteScheduleRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add(self, item: RouteSchedule) -> int:
+    def create(self, item: RouteSchedule) -> int:
         ...
 
     @abstractmethod
@@ -22,7 +22,17 @@ class IRouteScheduleRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add_connection_transport_workers_route_schedule(
-        self, item_id: int, tr_workers: List[TransportWorker]
-    ) -> None:
+    def create_conn_transport_workers_route_schedule(
+        self, item_id: int, workers: List[TransportWorker]
+    ):
+        ...
+
+    @abstractmethod
+    def delete_conn_transport_workers_route_schedule(self, item_id: int):
+        ...
+
+    @abstractmethod
+    def get_related_transport_workers(
+        self, item_id: int
+    ) -> List[TransportWorker]:
         ...

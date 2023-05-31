@@ -14,7 +14,7 @@ class IRouteRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add(self, item: Route) -> int:
+    def create(self, item: Route) -> int:
         ...
 
     @abstractmethod

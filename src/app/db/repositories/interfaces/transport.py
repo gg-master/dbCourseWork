@@ -14,7 +14,7 @@ class ITransportRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add(self, item: Transport) -> int:
+    def create(self, item: Transport) -> int:
         ...
 
     @abstractmethod

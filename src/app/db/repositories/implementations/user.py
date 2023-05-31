@@ -23,7 +23,7 @@ class UserRepository(Repository, IUserRepository):
         )
         return list(map(lambda x: User(*x), self._cursor.fetchall()))
 
-    def add(self, item: User) -> int:
+    def create(self, item: User) -> int:
         self._cursor.execute(
             """
             INSERT INTO public.users(

@@ -14,7 +14,7 @@ class IUserRepository(IRepository, ABC):
         ...
 
     @abstractmethod
-    def add(self, item: User) -> int:
+    def create(self, item: User) -> int:
         ...
 
     @abstractmethod
