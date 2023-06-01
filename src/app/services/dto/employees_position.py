@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from db.entities import TransportWorker
+from app.db.entities.transport_worker import TransportWorker
 
 
 @dataclass

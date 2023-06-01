@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from db.entities import TransportType, TransportationStop as EntityTrStop
+from app.db.entities import TransportType, TransportationStop as EntityTrStop
 
 
 @dataclass

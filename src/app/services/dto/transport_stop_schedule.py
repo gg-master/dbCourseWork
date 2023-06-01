@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
-from db.entities import (
+from app.db.entities import (
     RouteSchedule,
     TransportationStopSchedule as EntityTrStopSchedule,
 )
-from services.dto import TransportationStop
+from app.services.dto.transportation_stop import TransportationStop
 
 
 @dataclass

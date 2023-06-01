@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import List
-from db.entities import (
+from app.db.entities import (
     Route,
     TransportWorker,
     RouteSchedule as EntityRouteSchedule,
 )
-from services.dto import Transport, TransportationStopSchedule
+from app.services.dto.transport import Transport
+from app.services.dto.transport_stop_schedule import TransportationStopSchedule
 
 
 @dataclass

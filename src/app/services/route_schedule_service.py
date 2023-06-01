@@ -3,11 +3,10 @@ from typing import List
 from app.services.dto import RouteSchedule
 from app.db.repositories.interfaces import IRouteScheduleRepository
 from app.db.implementations import UnitOfWork, Database
-from app.services import (
-    TransportService,
-    TransportationStopScheduleService,
-    RouteService,
-)
+
+from app.services.transport_service import TransportService
+from app.services.transportation_stop_schedule_service import TransportationStopScheduleService
+from app.services.route_service import RouteService
 
 
 class RouteScheduleService:

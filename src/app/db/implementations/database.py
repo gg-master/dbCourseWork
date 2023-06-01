@@ -19,6 +19,15 @@ class Database(IDatabase):
     __connection: Optional[ps_connection] = None
     __cursor: Optional[ps_cursor] = None
 
+    @staticmethod
+    def prelaunch_check():
+        db_name = getenv("DATABASE_NAME")
+        host = getenv("DB_HOST")
+        user, password = getenv("DB_USER"), getenv("DB_USER_PASSWD")
+
+        if not all([db_name, host, user, password]):
+            raise ValueError("Invalid environment variables!")
+
     @classmethod
     def get_connection(cls) -> Tuple[ps_connection, ps_cursor]:
         if cls.__connection is not None:
@@ -30,6 +39,10 @@ class Database(IDatabase):
         db_name = getenv("DATABASE_NAME")
         host = getenv("DB_HOST")
         user, password = getenv("DB_USER"), getenv("DB_USER_PASSWD")
+
+        if not all([db_name, host, user, password]):
+            raise ValueError("Invalid environment variables!")
+
         try:
             cls.__connection = connect(
                 host=host,
@@ -64,7 +77,7 @@ class Database(IDatabase):
 
     @classmethod
     def dispose_connection(cls) -> None:
-        if cls.__connection is not None:
+        if cls.__connection is not None and not cls.__connection.closed:
             cls.__logger.info('Connection to db has been disposed')
 
             cls.__connection.close()
