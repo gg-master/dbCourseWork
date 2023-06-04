@@ -72,14 +72,13 @@ class TransportationStopRepository(Repository, ITransportationStopRepository):
                 transportation_stop_id, transport_type_id)
                 VALUES 
         """
-        arr = [f'(%(stop_id)s, %(tt{i})' for i in range(len(tr_types))]
+        arr = [f'(%(stop_id)s, %(tt{i})s)' for i in range(len(tr_types))]
         query += ',\n'.join(arr) + ';'
 
         args = {"stop_id": item_id}
         i: TransportType
         for num, i in enumerate(tr_types):
             args[f'tt{num}'] = i.id
-
         self._cursor.execute(query, args)
 
     def delete_conn_transportation_stop_transport_type(self, item_id: int):
@@ -94,7 +93,7 @@ class TransportationStopRepository(Repository, ITransportationStopRepository):
     def get_supported_transport_type(self, item_id) -> List[TransportType]:
         self._cursor.execute(
             """
-            SELECT * FROM public.transport_type tt
+            SELECT tt.id, tt.name FROM public.transport_type tt
             JOIN transportation_stop_transport_type tstt 
             ON tt.id = tstt.transport_type_id
             WHERE tstt.transportation_stop_id = %(item_id)s;

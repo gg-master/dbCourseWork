@@ -1,0 +1,81 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<script>
+    let tranposrtation_stop_list = {{ tr_stops| tojson_pretty | safe  }};
+    let transpot_type = {{ transport_types| tojson_pretty | safe  }};
+</script>
+<script src="/static/js/admin_transportation_stop.js"></script>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg btn-block shadow p-3 mb-4 mt-3 rounded" id="create_new_btn">
+        Создать новую остановку</button>
+</div>
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <th scope="col">id</th>
+            <th scope="col">Название</th>
+            <th scope="col">Широта</th>
+            <th scope="col">Долгота</th>
+            <th scope="col"></th>
+        </thead>
+        <tbody class="table_body">
+            {% for item in tr_stops %}
+            <tr>
+                <th scope="row">{{ item['id'] }}</th>
+                <td>{{ item['name'] }}</td>
+                <td>{{ item['latitude'] }}</td>
+                <td>{{ item['longitude'] }}</td>
+                <td>
+                    <a href="{{ item['id'] }}_show" class="badge badge-info">Просмотреть</a>
+                    <a href="{{ item['id'] }}_edit" class="badge badge-warning">Редактировать</a>
+                    <a href="{{ item['id'] }}_delete" class="badge badge-danger">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade record-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title"></h5>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Название:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Введите название">
+                        <div class="invalid-feedback" id="name_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="latitude" class="col-form-label">Широта:</label>
+                        <input type="number" class="form-control" id="latitude" step="0.000001"min="-90.0" max="90.0" value="0">
+                        <div class="invalid-feedback" id="latitude_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude" class="col-form-label">Долгота:</label>
+                        <input type="number" class="form-control" id="longitude" step="0.000001" min="-180.0" max="180.0" value="0">
+                        <div class="invalid-feedback" id="longitude_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport_type" class="col-form-label">Поддерживаемые типы транспорта:</label><br>
+                        <select id="transport_type" class="form-control selectpicker" multiple data-live-search="true" data-none-selected-text="Выберите из списка">
+                        </select>
+                        <div class="invalid-feedback" id="transport_type_error"></div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="save_btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

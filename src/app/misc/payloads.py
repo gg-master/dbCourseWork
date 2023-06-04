@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal
 from datetime import date, datetime
 from functools import partial, singledispatch
 
@@ -29,6 +30,11 @@ def convert_date(value: date):
 @convert.register(datetime)
 def convert_datetime(value: datetime):
     return value.isoformat()
+
+
+@convert.register(Decimal)
+def convert_datetime(value: Decimal):
+    return float(value)
 
 
 dumps = partial(

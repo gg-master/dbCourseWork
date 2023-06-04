@@ -47,7 +47,7 @@ def transport_action(transport_id):
     elif request.method == "POST":
         data = request.get_json()
         data["id"] = transport_id
-        transport = Transport.from_json(data)
+        transport = Transport.from_dict(data)
 
         if transport_id == 0:
             tr_service.create(transport)
@@ -56,17 +56,35 @@ def transport_action(transport_id):
     return jsonify(success=True)
 
 
-# @view.route("/transportation_stop/", methods=["GET"])
-# def transportation_stop_list():
-#     transport_serv = TransportationStopService(
-#         TransportationStopRepository(PostgresDbConnector)
-#     )
-#     all_stops = convert(transport_serv.get_all())
-#     all_tr_types = convert(
-#         TransportTypeRepository(PostgresDbConnector).get_all()
-#     )
-#     return render_template(
-#         "admin_transportation_stop_list.html",
-#         tr_stops=all_stops,
-#         transport_types=all_tr_types,
-#     )
+@view.route("/transportation_stop/", methods=["GET"])
+def transportation_stop_list():
+    tr_stop_serv = TransportationStopService(
+        TransportationStopRepository(PostgresDbConnector)
+    )
+    all_stops = convert(tr_stop_serv.get_all())
+    all_tr_types = convert(
+        TransportTypeRepository(PostgresDbConnector).get_all()
+    )
+    return render_template(
+        "admin_transportation_stop_list.html",
+        tr_stops=all_stops,
+        transport_types=all_tr_types,
+    )
+
+
+@view.route("/transportation_stop/<int:tr_stop_id>", methods=["POST", "DELETE"])
+def transportation_stop_action(tr_stop_id):
+    tr_stop_serv = TransportationStopService(
+        TransportationStopRepository(PostgresDbConnector)
+    )
+    if request.method == "DELETE":
+        tr_stop_serv.delete(tr_stop_id)
+    elif request.method == "POST":
+        data = request.get_json()
+        data["id"] = tr_stop_id
+        transport = TransportationStop.from_dict(data)
+        if tr_stop_id == 0:
+            tr_stop_serv.create(transport)
+        else:
+            tr_stop_serv.update(transport)
+    return jsonify(success=True)

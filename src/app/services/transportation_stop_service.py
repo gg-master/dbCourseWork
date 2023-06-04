@@ -20,9 +20,7 @@ class TransportationStopService:
             map(
                 lambda x: TransportationStop.from_entity(
                     x,
-                    self.__tr_stop_repo.get_supported_transport_type(
-                        x.type_id
-                    ),
+                    self.__tr_stop_repo.get_supported_transport_type(x.id),
                 ),
                 self.__tr_stop_repo.get_all(),
             )
@@ -31,9 +29,13 @@ class TransportationStopService:
     def create(self, item: TransportationStop) -> None:
         with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_repo.create(item.to_entity())
-            self.__tr_stop_repo.create_conn_transportation_stop_transport_type(
-                item.id, item.supported_transport_types
-            )
+
+            if item.supported_transport_types:
+                self.__tr_stop_repo.create_conn_transportation_stop_transport_type(
+                    item.id, item.supported_transport_types
+                )
+
+            self.__logger.debug('Creating new Transportation Stop: %s', item)
 
     def update(self, item: TransportationStop) -> None:
         with UnitOfWork(PostgresDbConnector):
@@ -44,10 +46,14 @@ class TransportationStopService:
             self.__tr_stop_repo.create_conn_transportation_stop_transport_type(
                 item.id, item.supported_transport_types
             )
+            self.__logger.debug('Updating Transportation Stop: %s', item)
 
     def delete(self, item_id: int) -> None:
         with UnitOfWork(PostgresDbConnector):
-            self.__tr_stop_repo.delete(item_id)
             self.__tr_stop_repo.delete_conn_transportation_stop_transport_type(
                 item_id
+            )
+            self.__tr_stop_repo.delete(item_id)
+            self.__logger.debug(
+                'Deleting Transportation Stop with id: %s', item_id
             )

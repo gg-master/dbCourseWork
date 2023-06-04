@@ -41,7 +41,7 @@ class TransportationStop:
         return transport_dict
 
     @classmethod
-    def from_json(cls, item_dict: dict) -> 'TransportationStop':
+    def from_dict(cls, item_dict: dict) -> 'TransportationStop':
         return cls(
             item_dict.get("id"),
             item_dict.get("name"),
