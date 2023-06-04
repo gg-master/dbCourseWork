@@ -2,7 +2,7 @@ import logging
 from typing import List
 from app.services.dto import TransportationStop
 from app.db.repositories.interfaces import ITransportationStopRepository
-from app.db.implementations import UnitOfWork, Database
+from app.db.implementations import UnitOfWork, PostgresDbConnector
 
 
 class TransportationStopService:
@@ -29,14 +29,14 @@ class TransportationStopService:
         )
 
     def create(self, item: TransportationStop) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_repo.create(item.to_entity())
             self.__tr_stop_repo.create_conn_transportation_stop_transport_type(
                 item.id, item.supported_transport_types
             )
 
     def update(self, item: TransportationStop) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_repo.update(item.to_entity())
             self.__tr_stop_repo.delete_conn_transportation_stop_transport_type(
                 item.id
@@ -46,7 +46,7 @@ class TransportationStopService:
             )
 
     def delete(self, item_id: int) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_repo.delete(item_id)
             self.__tr_stop_repo.delete_conn_transportation_stop_transport_type(
                 item_id

@@ -5,7 +5,7 @@ from app.db.repositories.interfaces import (
     ITransportationStopScheduleRepository,
     IRouteScheduleRepository,
 )
-from app.db.implementations import UnitOfWork, Database
+from app.db.implementations import UnitOfWork, PostgresDbConnector
 from app.services.transportation_stop_service import TransportationStopService
 
 
@@ -59,13 +59,13 @@ class TransportationStopScheduleService:
         )
 
     def create(self, item: TransportationStopSchedule) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_schedule_repo.create(item.to_entity())
 
     def update(self, item: TransportationStopSchedule) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_schedule_repo.update(item.to_entity())
 
     def delete(self, item_id: int) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__tr_stop_schedule_repo.delete(item_id)

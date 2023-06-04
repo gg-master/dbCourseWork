@@ -9,12 +9,12 @@ from psycopg2.extensions import (
     ISOLATION_LEVEL_AUTOCOMMIT,
     ISOLATION_LEVEL_DEFAULT,
 )
-from app.db.interfaces.database import IDatabase
+from app.db.interfaces.db_connector import IDatabaseCoonnector
 
 from app.misc.utils import get_rsc_path
 
 
-class Database(IDatabase):
+class PostgresDbConnector(IDatabaseCoonnector):
     __logger = logging.getLogger(__name__)
     __connection: Optional[ps_connection] = None
     __cursor: Optional[ps_cursor] = None

@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% block title %}{{ super() }} - Admin Panel{% endblock %}
+{% block head_block %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+{% endblock %}
 {% block nav_block %}
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,11 +12,10 @@
 </button>
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-        <a class="nav-item nav-link" href="#">Транспорт</a>
-        <a class="nav-item nav-link" href="#">Остановки</a>
-        <a class="nav-item nav-link" href="#">Расписания</a>
+        <a class="nav-item nav-link" href="/admin/">Статистика</a>
+        <a class="nav-item nav-link" href="/admin/transport/">Транспорт</a>
+        <a class="nav-item nav-link" href="/admin/transportation_stop">Остановки</a>
+        <a class="nav-item nav-link" href="/admin/route_schedule">Расписания</a>
     </div>
 </div>
-{% endblock %}
-{% block content %}
 {% endblock %}

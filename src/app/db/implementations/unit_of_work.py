@@ -1,6 +1,6 @@
 import logging
 import traceback as tb
-from app.db.implementations.database import Database
+from app.db.implementations.db_connector import PostgresDbConnector
 from app.db.interfaces.unit_of_work import IUnitOfWork
 
 
@@ -8,7 +8,7 @@ from app.db.interfaces.unit_of_work import IUnitOfWork
 class UnitOfWork(IUnitOfWork):
     __logger = logging.getLogger(__name__)
 
-    def __init__(self, database: Database) -> None:
+    def __init__(self, database: PostgresDbConnector) -> None:
         self.__connection = database.get_connection()[0]
 
     def commit(self):

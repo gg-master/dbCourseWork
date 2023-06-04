@@ -2,7 +2,7 @@ import logging
 from typing import List
 from app.services.dto import RouteSchedule
 from app.db.repositories.interfaces import IRouteScheduleRepository
-from app.db.implementations import UnitOfWork, Database
+from app.db.implementations import UnitOfWork, PostgresDbConnector
 
 from app.services.transport_service import TransportService
 from app.services.transportation_stop_schedule_service import TransportationStopScheduleService
@@ -57,14 +57,15 @@ class RouteScheduleService:
         )
 
     def create(self, item: RouteSchedule) -> None:
-        with UnitOfWork(Database):
+        # TODO добавить создание связанных остановок
+        with UnitOfWork(PostgresDbConnector):
             self.__route_schedule_repo.create(item.to_entity())
             self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
                 item.id, item.transport_workers
             )
 
     def update(self, item: RouteSchedule) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__route_schedule_repo.update(item.to_entity())
             self.__route_schedule_repo.delete_conn_transport_workers_route_schedule(
                 item.id
@@ -74,7 +75,7 @@ class RouteScheduleService:
             )
 
     def delete(self, item_id: int) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__route_schedule_repo.delete(item_id)
             self.__route_schedule_repo.delete_conn_transport_workers_route_schedule(
                 item_id

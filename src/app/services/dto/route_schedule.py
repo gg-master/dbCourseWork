@@ -34,7 +34,6 @@ class RouteSchedule:
             stop_schedules,
         )
 
-    @classmethod
     def to_entity(self) -> EntityRouteSchedule:
         return EntityRouteSchedule(
             self.id,

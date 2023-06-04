@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/base.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -15,39 +16,42 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
-    <title>Public Transport - {{ title }}</title>
+    {% block head_block %}{% endblock %}
+    <title>Public Transport{% block title %}{% endblock %}</title>
 </head>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container d-flex justify-content-center">
-            <a class="navbar-brand" href="/">
-                <img src="/static/img/logo.png" width="40em">
-                PublicTransport
-            </a>
-            {% block nav_block %}{% endblock %}
-        </div>
-    </nav>
-</header>
 
-<body style="height: 100%; min-height: 100vh;">
-    <!-- Begin page content -->
-    <main role="main" style="min-height: 100vh;">
-        {% block content %}{% endblock %}
-    </main>
-</body>
+<body>
+    <div class="wrapper">
+        <header class="head">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container d-flex justify-content-center">
+                    <a class="navbar-brand" href="/">
+                        <img src="/static/img/logo.png" width="40em">
+                        PublicTransport
+                    </a>
+                    {% block nav_block %}{% endblock %}
+                </div>
+            </nav>
+        </header>
 
-<footer class='d-flex pt-4 pb-4' style="font-size: .8rem;
-    background-color: #1F1F22; color: #dedede !important;">
-    <div class="container">
-        <div class="d-flex text-main">
-            <div>
-                © 2049-2077 PublicTransport - общественный транспорт будущего. Все права защищены.
+        <!-- Begin page content -->
+        <main role="main" class="main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer d-flex pt-4 pb-4">
+            <div class="container">
+                <div class="d-flex text-main">
+                    <div>
+                        © 2049-2077 PublicTransport - общественный транспорт будущего. Все права защищены.
+                    </div>
+                    <div style="margin-left: 2rem">
+                        Контактный номер +7355608
+                    </div>
+                </div>
             </div>
-            <div style="margin-left: 2rem">
-                Контактный номер +7355608
-            </div>
-        </div>
+        </footer>
     </div>
-</footer>
+</body>
 
 </html>

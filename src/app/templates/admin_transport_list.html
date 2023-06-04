@@ -1,0 +1,103 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<script>
+    let tranposrt_list = {{ transport|tojson_pretty|safe  }};
+    let transpot_type = {{ transport_types|tojson_pretty|safe  }};
+</script>
+<script src="/static/js/admin_transport.js"></script>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg btn-block shadow p-3 mb-4 mt-3 rounded" id="create_new_btn">Создать новый транспорт</button>
+</div>
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <th scope="col">id</th>
+            <th scope="col">Тип транспорта</th>
+            <th scope="col">Марка</th>
+            <th scope="col">Регистрационный номер</th>
+            <th scope="col">Ремонтируется</th>
+            <th scope="col"></th>
+        </thead>
+        <tbody class="table_body">
+            {% for item in transport %}
+            <tr>
+                <th scope="row">{{ item['id'] }}</th>
+                <td>{{ item['transport_type']['name'] }}</td>
+                <td>{{ item['brand'] }}</td>
+                <td>{{ item['registration_number'] }}</td>
+                {% if item['is_repaired'] %}
+                    <td>Да</td>
+                {% else %}
+                    <td>Нет</td>
+                {% endif %}
+                
+                <td>
+                    <a href="{{ item['id'] }}_show" class="badge badge-info">Просмотреть</a>
+                    <a href="{{ item['id'] }}_edit" class="badge badge-warning">Редактировать</a>
+                    <a href="{{ item['id'] }}_delete" class="badge badge-danger">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade record-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title"></h5>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="transport_type" class="col-form-label">Тип транспорта:</label>
+                        <select id="transport_type" class="form-control">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brand" class="col-form-label">Марка:</label>
+                        <input type="text" class="form-control" id="brand">
+                        <div class="invalid-feedback" id="brand_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registration_number" class="col-form-label">Регистрационный номер:</label>
+                        <input type="text" class="form-control" id="registration_number">
+                        <div class="invalid-feedback" id="registration_number_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manufacturer" class="col-form-label">Производитель:</label>
+                        <input type="text" class="form-control" id="manufacturer">
+                        <div class="invalid-feedback" id="manufacturer_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manufacturing_date" class="col-form-label">Дата выпуска:</label>
+                        <input type="date" class="form-control" id="manufacturing_date">
+                        <div class="invalid-feedback" id="manufacturing_date_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity" class="col-form-label">Вместимость:</label>
+                        <input type="range" class="form-control-range" id="capacity" min="1" max="1000" value="10">
+                        <span id="capacity_value">10</span>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="is_repaired">
+                        <label for="is_repaired" class="form-check-label">Ремонтируется</label>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="save_btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

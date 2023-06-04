@@ -5,7 +5,7 @@ from app.db.repositories.interfaces import (
     ITransportRepository,
     ITransportTypeRepository,
 )
-from app.db.implementations import UnitOfWork, Database
+from app.db.implementations import UnitOfWork, PostgresDbConnector
 
 
 class TransportService:
@@ -34,13 +34,16 @@ class TransportService:
         )
 
     def create(self, item: Transport) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__transport_repo.create(item.to_entity())
+            self.__logger.debug('Creating new Transport: %s', item)
 
     def update(self, item: Transport) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__transport_repo.update(item.to_entity())
+            self.__logger.debug('Updating Transport: %s', item)
 
     def delete(self, item_id: int) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__transport_repo.delete(item_id)
+            self.__logger.debug('Deleting Transport with id: %s', item_id)

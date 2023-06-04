@@ -2,7 +2,7 @@ import logging
 from typing import List
 from app.db.entities import Route
 from app.db.repositories.interfaces import IRouteRepository
-from app.db.implementations import UnitOfWork, Database
+from app.db.implementations import UnitOfWork, PostgresDbConnector
 
 
 class RouteService:
@@ -17,13 +17,13 @@ class RouteService:
         return self.__route_repo.get_all()
 
     def create(self, item: Route) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__route_repo.create(item)
 
     def update(self, item: Route) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__route_repo.update(item)
 
     def delete(self, item_id: int) -> None:
-        with UnitOfWork(Database):
+        with UnitOfWork(PostgresDbConnector):
             self.__route_repo.delete(item_id)

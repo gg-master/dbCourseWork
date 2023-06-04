@@ -32,3 +32,28 @@ class TransportationStop:
             self.latitude,
             self.longitude,
         )
+
+    def to_dict(self) -> dict:
+        transport_dict = self.__dict__
+        transport_dict['supported_transport_types'] = list(
+            map(lambda x: x.to_dict(), self.supported_transport_types)
+        )
+        return transport_dict
+
+    @classmethod
+    def from_json(cls, item_dict: dict) -> 'TransportationStop':
+        return cls(
+            item_dict.get("id"),
+            item_dict.get("name"),
+            item_dict.get("latitude"),
+            item_dict.get("longitude"),
+            list(
+                map(
+                    lambda x: TransportType(
+                        x.get("id"),
+                        x.get("name"),
+                    ),
+                    item_dict.get("supported_transport_types"),
+                )
+            ),
+        )

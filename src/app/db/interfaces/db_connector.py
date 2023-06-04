@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from app.misc.singleton import SingletonMeta
 
 
-class IDatabase(ABC):
+class IDatabaseCoonnector(ABC):
     __metaclass__ = SingletonMeta
     @classmethod
     @abstractmethod

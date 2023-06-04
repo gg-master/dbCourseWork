@@ -1,4 +1,4 @@
-Before launching the application, create .env file with the following parameters:
+Before launching the application, create .env file (or set environment variables) with the following parameters:
 ```
 PYTHONPATH="src"
 
@@ -12,3 +12,5 @@ DATABASE_NAME="public_transport_app"
 DB_USER="postgres"
 DB_USER_PASSWD="user_password"
 ```
+
+After creating the .env file, change the path to it in run.py.
