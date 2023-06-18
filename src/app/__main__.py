@@ -5,6 +5,7 @@ from flask import Flask
 from app.views.main import register_all_views
 from app.db.implementations import PostgresDbConnector
 from app.misc.payloads import dumps
+from app.api.base import api_blueprint
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -20,7 +21,8 @@ def create_app() -> Flask:
     flask_app.jinja_env.filters['tojson_pretty'] = dumps
 
     PostgresDbConnector.prelaunch_check()
-
+    
+    flask_app.register_blueprint(api_blueprint)
     register_all_views(flask_app)
 
     @flask_app.teardown_appcontext

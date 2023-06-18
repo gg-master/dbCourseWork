@@ -1,3 +1,4 @@
+from datetime import date
 import logging
 from typing import List
 from app.services.dto import Transport
@@ -30,6 +31,20 @@ class TransportService:
                     x, self.__type_repo.get(x.type_id)
                 ),
                 self.__transport_repo.get_all(),
+            )
+        )
+
+    def get_all_transport_from_manufacturing_date(
+        self, manufacturing_date: date
+    ) -> List[Transport]:
+        return list(
+            map(
+                lambda x: Transport.from_entity(
+                    x, self.__type_repo.get(x.type_id)
+                ),
+                self.__transport_repo.get_all_transport_from_manufacturing_date(
+                    manufacturing_date
+                ),
             )
         )
 

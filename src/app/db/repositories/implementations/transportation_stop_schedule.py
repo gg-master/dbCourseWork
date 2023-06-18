@@ -48,6 +48,21 @@ class TransportationStopScheduleRepository(
                 self._cursor.fetchall(),
             )
         )
+    
+    def get_all_by_tr_stop(self, tr_stop_id: int) -> List[TransportationStopSchedule]:
+        self._cursor.execute(
+            """
+            SELECT * FROM public.transport_stop_schedule
+            WHERE stop_id = %(tr_stop_id)s;
+        """,
+            {"tr_stop_id": tr_stop_id},
+        )
+        return list(
+            map(
+                lambda x: TransportationStopSchedule(*x),
+                self._cursor.fetchall(),
+            )
+        )
 
     def create(self, item: TransportationStopSchedule) -> int:
         self._cursor.execute(
@@ -87,47 +102,4 @@ class TransportationStopScheduleRepository(
 	            WHERE id = %(item_id)s;
         """,
             {"item_id": item_id},
-        )
-
-    def create_conn_transport_workers_route_schedule(
-        self, item_id: int, workers: List[TransportWorker]
-    ):
-        query = """
-            INSERT INTO public.transport_workers_route_schedule(
-                transport_workers_id, route_schedule_id)
-                VALUES 
-        """
-        arr = [f'(%(tw{i})s, %(rs_id)' for i in range(len(workers))]
-        query += ',\n'.join(arr) + ';'
-
-        args = {"rs_id": item_id}
-        i: TransportWorker
-        for num, i in enumerate(workers):
-            args[f'tw{num}'] = i.id
-
-        self._cursor.execute(query, args)
-
-    def delete_conn_transport_workers_route_schedule(self, item_id: int):
-        self._cursor.execute(
-            """
-            DELETE FROM public.transport_workers_route_schedule
-	            WHERE route_schedule_id = %(item_id)s;
-        """,
-            {"item_id": item_id},
-        )
-
-    def get_related_transport_workers(
-        self, item_id: int
-    ) -> List[TransportWorker]:
-        self._cursor.execute(
-            """
-            SELECT * FROM public.transport_workers tw
-            JOIN transport_workers_route_schedule twrs 
-            ON tw.id = twrs.transport_workers_id
-            WHERE twrs.route_schedule_id = %(item_id)s;
-        """,
-            {"item_id": item_id},
-        )
-        return list(
-            map(lambda x: TransportWorker(*x), self._cursor.fetchall())
         )

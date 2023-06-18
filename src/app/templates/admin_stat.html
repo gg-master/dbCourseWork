@@ -1,3 +1,63 @@
 {% extends "admin_base.html" %}
 {% block content %}
+<script>
+    let transportation_stop_list = {{ transportation_stop_list| tojson_pretty | safe }};
+</script>
+<script src="/static/js/admin_stat.js"></script>
+<div class="container ">
+    <div class="row p-3">
+        <div class="col border-right">
+            <form>
+                <div class="form-group row">
+                    <label for="manufacturing_date" class="col-sm-6 col-form-label">Транспорт, произведенный от:</label>
+                    <div class="col-sm-6">
+                        <input type="date" class="form-control" id="manufacturing_date">
+                    </div>
+                </div>
+            </form>
+            <div class="container">
+                <table class="table">
+                    <thead class="thead-light">
+                        <th scope="col">id</th>
+                        <th scope="col">Тип транспорта</th>
+                        <th scope="col">Марка</th>
+                        <th scope="col">Регистрационный номер</th>
+                        <th scope="col">Дата производства</th>
+                    </thead>
+                    <tbody class="table_body" id="manufactured_transport_table">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col">
+            <form>
+                <div class="form-group row">
+                    <label for="manufacturing_date" class="col-form-label pl-3">Задействование остановок в
+                        маршрутах:</label>
+                    <div class="col-sm-6" hidden='true'>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+            </form>
+            <div class="container">
+                <table class="table">
+                    <thead class="thead-light">
+                        <th scope="col">id</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Кол-во использования</th>
+                    </thead>
+                    <tbody class="table_body" id="tr_stop_using_table">
+                        {% for item in transportation_stop_list %}
+                        <tr>
+                            <th scope="row">{{ item['id'] }}</th>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['using_count'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

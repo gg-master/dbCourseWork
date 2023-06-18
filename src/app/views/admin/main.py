@@ -25,8 +25,21 @@ view = Blueprint("admin", __name__, url_prefix="/admin")
 
 @view.route('/')
 def stat():
-    # TODO сделать аналитические запросы
-    return render_template("admin_stat.html")
+    tr_stop_serv = TransportationStopService(
+        TransportationStopRepository(PostgresDbConnector)
+    )
+    tr_stop_sched_serv = TransportationStopScheduleService(
+        TransportationStopScheduleRepository(PostgresDbConnector),
+        RouteScheduleRepository(PostgresDbConnector),
+        TransportationStopService(
+            TransportationStopRepository(PostgresDbConnector)
+        ),
+    )
+    all_stops = tr_stop_serv.get_all()
+    for stop in all_stops:
+        stop.using_count = len(tr_stop_sched_serv.get_all_by_tr_stop(stop.id))
+    all_stops = convert(all_stops)
+    return render_template("admin_stat.html", transportation_stop_list=all_stops)
 
 
 @view.route("/transport/", methods=["GET"])

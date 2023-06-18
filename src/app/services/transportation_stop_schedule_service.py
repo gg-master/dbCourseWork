@@ -54,7 +54,25 @@ class TransportationStopScheduleService:
                     self.__route_schedule_repo.get(x.route_schedule_id),
                     self.__tr_stop_service.get(x.stop_id),
                 ),
-                self.__tr_stop_schedule_repo.get_all_by_route_schedule(route_sch_id),
+                self.__tr_stop_schedule_repo.get_all_by_route_schedule(
+                    route_sch_id
+                ),
+            )
+        )
+
+    def get_all_by_tr_stop(
+        self, tr_stop_id: int
+    ) -> List[TransportationStopSchedule]:
+        return list(
+            map(
+                lambda x: TransportationStopSchedule.from_entity(
+                    x,
+                    self.__route_schedule_repo.get(x.route_schedule_id),
+                    self.__tr_stop_service.get(x.stop_id),
+                ),
+                self.__tr_stop_schedule_repo.get_all_by_tr_stop(
+                    tr_stop_id
+                ),
             )
         )
 

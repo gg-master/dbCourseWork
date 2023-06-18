@@ -26,3 +26,9 @@ class ITransportationStopScheduleRepository(IRepository, ABC):
         self, route_sch_id: int
     ) -> List[TransportationStopSchedule]:
         ...
+
+    @abstractmethod
+    def get_all_by_tr_stop(
+        self, tr_stop_id: int
+    ) -> List[TransportationStopSchedule]:
+        ...

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import date
 from typing import List
 from app.db.repositories.interfaces.base import IRepository
 from app.db.entities import Transport
@@ -19,4 +20,10 @@ class ITransportRepository(IRepository, ABC):
 
     @abstractmethod
     def update(self, item: Transport) -> None:
+        ...
+
+    @abstractmethod
+    def get_all_transport_from_manufacturing_date(
+        self, manufacturing_date: date
+    ) -> List[Transport]:
         ...

@@ -59,9 +59,10 @@ class RouteScheduleService:
     def create(self, item: RouteSchedule) -> None:
         with UnitOfWork(PostgresDbConnector):
             item.id = self.__route_schedule_repo.create(item.to_entity())
-            self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
-                item.id, item.transport_workers
-            )
+            if item.transport_workers:
+                self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
+                    item.id, item.transport_workers
+                )
             for stop_sched in item.included_stop_schedules:
                 stop_sched.route_schedule.id = item.id
                 self.__tr_stop_schedule_service.create(stop_sched)
@@ -74,9 +75,10 @@ class RouteScheduleService:
             self.__route_schedule_repo.delete_conn_transport_workers_route_schedule(
                 item.id
             )
-            self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
-                item.id, item.transport_workers
-            )
+            if item.transport_workers:
+                self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
+                    item.id, item.transport_workers
+                )
             for stop_sched in self.__tr_stop_schedule_service.get_all_by_route_schedule(item.id):
                 self.__tr_stop_schedule_service.delete(stop_sched.id)
 

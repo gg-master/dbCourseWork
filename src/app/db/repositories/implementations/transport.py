@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 from app.db.entities import Transport
 from app.db.repositories.implementations.base import Repository
@@ -20,6 +21,18 @@ class TransportRepository(Repository, ITransportRepository):
             """
             SELECT * FROM public.transport;
         """
+        )
+        return list(map(lambda x: Transport(*x), self._cursor.fetchall()))
+
+    def get_all_transport_from_manufacturing_date(
+        self, manufacturing_date: date
+    ) -> List[Transport]:
+        self._cursor.execute(
+            """
+            SELECT * FROM public.transport
+            WHERE manufacturing_date >= %(manufacturing_date)s;
+        """,
+            {"manufacturing_date": manufacturing_date},
         )
         return list(map(lambda x: Transport(*x), self._cursor.fetchall()))
 
