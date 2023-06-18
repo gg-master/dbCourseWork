@@ -250,14 +250,14 @@ $(document).ready(function () {
 
             if (name_trs_sched.value == -1) {
                 displayErrorMessage(name_trs_sched, "Необходимо сделать выбор");
-                isOk == false;
+                isOk = false;
             } else {
                 hideErrorMessage(name_trs_sched);
             }
             if (departure_time.value.trim() === "") {
                 displayErrorMessage(departure_time,
                     "Время отправления не должно быть пустым");
-                isOk == false;
+                isOk = false;
             } else {
                 hideErrorMessage(departure_time);
             }
@@ -268,25 +268,24 @@ $(document).ready(function () {
 
         if (routeField.value.trim() === "") {
             displayErrorMessage(routeField, "Должен быть выбран маршрут");
-            isOk == false;
+            isOk = false;
         } else {
             hideErrorMessage(routeField);
         }
         if (transportTypeField.value.trim() === "") {
             displayErrorMessage(transportTypeField,
                 "Должен быть выбран тип  транспорта");
-            isOk == false;
+            isOk = false;
         } else {
             hideErrorMessage(transportTypeField);
         }
         if (transportField.value.trim() === "") {
             displayErrorMessage(transportField,
                 "Должен быть выбран транспорт");
-            isOk == false;
+            isOk = false;
         } else {
             hideErrorMessage(transportField);
         }
-
         return isOk;
     }
 
