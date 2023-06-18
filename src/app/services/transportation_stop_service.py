@@ -28,7 +28,7 @@ class TransportationStopService:
 
     def create(self, item: TransportationStop) -> None:
         with UnitOfWork(PostgresDbConnector):
-            self.__tr_stop_repo.create(item.to_entity())
+            item.id = self.__tr_stop_repo.create(item.to_entity())
 
             if item.supported_transport_types:
                 self.__tr_stop_repo.create_conn_transportation_stop_transport_type(

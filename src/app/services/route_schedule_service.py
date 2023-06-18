@@ -57,12 +57,16 @@ class RouteScheduleService:
         )
 
     def create(self, item: RouteSchedule) -> None:
-        # TODO добавить создание связанных остановок
         with UnitOfWork(PostgresDbConnector):
-            self.__route_schedule_repo.create(item.to_entity())
+            item.id = self.__route_schedule_repo.create(item.to_entity())
             self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
                 item.id, item.transport_workers
             )
+            for stop_sched in item.included_stop_schedules:
+                stop_sched.route_schedule.id = item.id
+                self.__tr_stop_schedule_service.create(stop_sched)
+            self.__logger.debug('Creating new RouteSchedule: %s', item)
+
 
     def update(self, item: RouteSchedule) -> None:
         with UnitOfWork(PostgresDbConnector):
@@ -73,6 +77,14 @@ class RouteScheduleService:
             self.__route_schedule_repo.create_conn_transport_workers_route_schedule(
                 item.id, item.transport_workers
             )
+            for stop_sched in self.__tr_stop_schedule_service.get_all_by_route_schedule(item.id):
+                self.__tr_stop_schedule_service.delete(stop_sched.id)
+
+            for stop_sched in item.included_stop_schedules:
+                stop_sched.route_schedule.id = item.id
+                self.__tr_stop_schedule_service.create(stop_sched)
+            self.__logger.debug('Updating RouteSchedule: %s', item)
+
 
     def delete(self, item_id: int) -> None:
         with UnitOfWork(PostgresDbConnector):
@@ -80,3 +92,6 @@ class RouteScheduleService:
             self.__route_schedule_repo.delete_conn_transport_workers_route_schedule(
                 item_id
             )
+            for stop_sched in self.__tr_stop_schedule_service.get_all_by_route_schedule(item_id):
+                self.__tr_stop_schedule_service.delete(stop_sched.id)
+            self.__logger.debug('Deleting RouteSchedule with id: %s', item_id)

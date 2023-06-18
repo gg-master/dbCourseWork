@@ -60,7 +60,7 @@ class RouteScheduleRepository(Repository, IRouteScheduleRepository):
             {"item_id": item_id},
         )
 
-    def create_connection_transport_workers_route_schedule(
+    def create_conn_transport_workers_route_schedule(
         self, item_id: int, tr_workers: List[TransportWorker]
     ) -> None:
         query = """
@@ -68,7 +68,7 @@ class RouteScheduleRepository(Repository, IRouteScheduleRepository):
 	            transport_workers_id, route_schedule_id)
                 VALUES 
         """
-        arr = [f'(%(tw{i})s, %(rs_id)' for i in range(len(tr_workers))]
+        arr = [f'(%(tw{i})s, %(rs_id)s)' for i in range(len(tr_workers))]
         query += ',\n'.join(arr) + ';'
 
         args = {"rs_id": item_id}
@@ -77,3 +77,26 @@ class RouteScheduleRepository(Repository, IRouteScheduleRepository):
             args[f'tw{num}'] = i.id
 
         self._cursor.execute(query, args)
+
+    def delete_conn_transport_workers_route_schedule(self, item_id: int):
+        self._cursor.execute(
+            """
+            DELETE FROM public.transport_workers_route_schedule
+	            WHERE route_schedule_id = %(item_id)s;
+        """,
+            {"item_id": item_id},
+        )
+
+    def get_related_transport_workers(
+        self, item_id: int
+    ) -> List[TransportWorker]:
+        self._cursor.execute(
+            """
+            SELECT tw.* FROM public.transport_workers tw
+            JOIN transport_workers_route_schedule twrs
+            ON tw.id = twrs.transport_workers_id
+            WHERE twrs.route_schedule_id = %(item_id)s;
+        """,
+            {"item_id": item_id},
+        )
+        return list(map(lambda x: TransportWorker(*x), self._cursor.fetchall()))

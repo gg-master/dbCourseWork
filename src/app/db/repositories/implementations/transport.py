@@ -56,9 +56,13 @@ class TransportRepository(Repository, ITransportRepository):
         """,
             {
                 "item_id": item.id,
-                "name": item.name,
-                "latitude": item.latitude,
-                "longitude": item.longitude,
+                "brand": item.brand,
+                "registration_number": item.registration_number,
+                "manufacturer": item.manufacturer,
+                "manufacturing_date": item.manufacturing_date,
+                "capacity": item.capacity,
+                "is_repaired": item.is_repaired,
+                "type_id": item.type_id,
             },
         )
 

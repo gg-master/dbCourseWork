@@ -1,0 +1,108 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<script>
+    let route_schedule_list = {{ route_schedule_list| tojson_pretty | safe }};
+    let transport_type = {{ transport_type| tojson_pretty | safe }};
+    let transportation_stop_list = {{ transportation_stop_list| tojson_pretty | safe }};
+    let routes = {{ routes| tojson_pretty | safe }};
+    let transport_list = {{ transport_list| tojson_pretty | safe }};
+    let transport_workers = {{ transport_workers| tojson_pretty | safe }};
+
+</script>
+<script src="/static/js/admin_route_schedule.js"></script>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg btn-block shadow p-3 mb-4 mt-3 rounded" id="create_new_btn">
+        Создать новое расписание</button>
+</div>
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <th scope="col">id</th>
+            <th scope="col">Тип транспорта</th>
+            <th scope="col">Транспорт</th>
+            <th scope="col">Маршрут</th>
+            <th scope="col">Кол-во работников</th>
+            <th scope="col">Кол-во остановок</th>
+            <th scope="col"></th>
+        </thead>
+        <tbody class="table_body main_table">
+            {% for item in route_schedule_list %}
+            <tr>
+                <th scope="row">{{ item['id'] }}</th>
+                <td>{{ item['transport']['transport_type']['name'] }}</td>
+                <td>{{ item['transport']['brand'] }}</td>
+                <td>{{ item['route']['name'] }}</td>
+                <td>{{ item['transport_workers']|length }}</td>
+                <td>{{ item['included_stop_schedules']|length }}</td>
+                <td>
+                    <a href="{{ item['id'] }}_show" class="badge badge-info">Просмотреть</a>
+                    <a href="{{ item['id'] }}_edit" class="badge badge-warning">Редактировать</a>
+                    <a href="{{ item['id'] }}_delete" class="badge badge-danger">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade record-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title"></h5>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="route" class="col-form-label">Маршрут:</label>
+                        <select id="route" class="form-control">
+                        </select>
+                        <div class="invalid-feedback" id="route_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport_type" class="col-form-label">Тип транспорта:</label>
+                        <select id="transport_type" class="form-control">
+                        </select>
+                        <div class="invalid-feedback" id="transport_type_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport" class="col-form-label">Транспорт:</label>
+                        <select id="transport" class="form-control">
+                        </select>
+                        <div class="invalid-feedback" id="transport_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workers" class="col-form-label">Работники:</label><br>
+                        <select id="workers" class="form-control selectpicker" multiple data-live-search="true"
+                            data-none-selected-text="Выберите из списка">
+                        </select>
+                        <div class="invalid-feedback" id="workers_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Расписание остановок:</label><br>
+                        <button type="button" id="add_trs_sched" class="btn btn-info btn-sm btn-block mb-2">Добавить
+                            остановку</button>
+                        <table id="table_trs_sched" class="table">
+                            <thead class="thead-light">
+                                <th scope="col">Название</th>
+                                <th scope="col">Время отправления</th>
+                                <th scope="col"></th>
+                            </thead>
+                            <tbody id="table_body_trs_sched" class="table_body ">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="save_btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

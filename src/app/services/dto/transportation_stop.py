@@ -53,7 +53,7 @@ class TransportationStop:
                         x.get("id"),
                         x.get("name"),
                     ),
-                    item_dict.get("supported_transport_types"),
+                    item_dict.get("supported_transport_types", {}),
                 )
             ),
         )

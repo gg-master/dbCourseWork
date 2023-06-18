@@ -3,5 +3,5 @@ from app.db.repositories.interfaces.base import IRepository
 
 
 class Repository(IRepository):
-    def __init__(self, databse: PostgresDbConnector):
-        self._connection, self._cursor = databse.get_connection()
+    def __init__(self, databse_connector: PostgresDbConnector):
+        self._connection, self._cursor = databse_connector.get_connection()
